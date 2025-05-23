@@ -1,5 +1,7 @@
-# modules-Clock2Arduino
+# Clock2Arduino
 Documentation and Code of an Eurorack Module, which realizes a Clock Input into an [Arduino Nano](https://store.arduino.cc/products/arduino-nano)
+
+![the current working state of the breadboard implementation](./images/Perspective.jpg)
 
 
 # About
@@ -34,14 +36,25 @@ Last but not least I did add a LED to the port `d13` of the Arduino, such that t
 
 ![basic schematic of the input guard](./images/GuardWithClockLed.png)
 
+
+## Programming the Arduino Nano
+
+The code for the arduino is pretty straight forward. It does not use external libraries and thus has no external dependencies. 
+It creates an internal clock signal with a configurable speed and signal uptime. 
+It reads an external clock signal and syncs the clock led either to the internal clock signal (for debugging) or to the external one (which might fall back to the internal one, if no plug is present in the input jack).
+The code can be found in [Clock2Arduino.ino](./Clock2Arduino.ino).
+
+## Breadboarding
+
+![top view of the breakboard](./images/BreadBoard.jpg)
+
+
 # Licensing
-The code here is available under the [MIT License](./LICENSE-Software), the hardware designs are available under [CC BY-SA 4.0](./LICENSE-Hardware).
+The code and documentation here is available under the [MIT License](./LICENSE-Software), the hardware design is available under [CC BY-SA 4.0](./LICENSE-Hardware).
 
 
 # References
-
 * Stargirl Flowers documentation of the big honking button with a gate guard: https://blog.thea.codes/designing-big-honking-button/
 * Github repository of the big honking button: https://github.com/wntrblm/Big_Honking_Button
 * Gate guard layout from Emilie Gillet for the grids module: https://pichenettes.github.io/mutable-instruments-documentation/modules/grids/downloads/grids_v02.pdf
 * Arduino Nano: https://store.arduino.cc/products/arduino-nano
-
