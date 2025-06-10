@@ -42,12 +42,26 @@ Last but not least I did add a LED to the port `d13` of the Arduino, such that t
 The code for the arduino is pretty straight forward. It does not use external libraries and thus has no external dependencies. 
 It creates an internal clock signal with a configurable speed and signal uptime. 
 It reads an external clock signal and syncs the clock led either to the internal clock signal (for debugging) or to the external one (which might fall back to the internal one, if no plug is present in the input jack).
-The code can be found in [Clock2Arduino.ino](./Clock2Arduino.ino).
+The code can be found in [Clock2Arduino.ino](./Clock2Arduino/Clock2Arduino.ino).
 
 ## Breadboarding
 
 ![top view of the breakboard](./images/BreadBoard.jpg)
 
+
+## Using Arduino's input pullup resistor
+[asciisynth](https://www.instagram.com/asciisynth/) (https://blinkenl.info) told me on instagram about the pullup resistor of the arduino. Basically, you 
+can easily connect the input pin of the Arduino *in* the Arduino to +5V with a 10k resistor inbetween. In my schematic I did this by hand, 
+but by changing the line `pinMode(CLOCK_IN,  INPUT);` to `pinMode(CLOCK_IN,  INPUT_PULLUP);` one can remove the resistor from the schematic and simplify it. 
+This looks as follows: 
+
+![improved schematic of the input guard](./images/UsingInputPullup.png)
+
+The code at [Clock2Arduino.ino](./Clock2Arduino/Clock2Arduino.ino) contains now an additionel `#define` which defines, if the internal or an external pullup resistor 
+shall be used. 
+
+## Using hardware interrupts to simplify the loop
+Again, [asciisynth](https://www.instagram.com/asciisynth/) (https://blinkenl.info) suggested to use hardware interrupts in the software to have a more precise timing and be able to do more "other stuff" in the loop. I tried and it works nicely. This change does not require changes to the schematic or bread board setup. The corresponding improved code can be found [here](./Clock2Arduino_interruptVersion/Clock2Arduino_interruptVersion.ino)
 
 # Licensing
 The code and documentation here is available under the [MIT License](./LICENSE-Software), the hardware design is available under [CC BY-SA 4.0](./LICENSE-Hardware).
@@ -58,3 +72,4 @@ The code and documentation here is available under the [MIT License](./LICENSE-S
 * Github repository of the big honking button: https://github.com/wntrblm/Big_Honking_Button
 * Gate guard layout from Emilie Gillet for the grids module: https://pichenettes.github.io/mutable-instruments-documentation/modules/grids/downloads/grids_v02.pdf
 * Arduino Nano: https://store.arduino.cc/products/arduino-nano
+* [asciisynth](https://www.instagram.com/asciisynth/) (https://blinkenl.info) gave very helpful feedback to improve this
