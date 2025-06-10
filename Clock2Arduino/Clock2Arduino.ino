@@ -1,5 +1,5 @@
 // Clock2Arduino
-// version 0.0.1, 2025-05-23
+// version 0.1.0, 2025-06-10
 // by l8-e https://linktr.ee/l8.minus.e
 // Repository: https://github.com/l8-e/modules-Clock2Arduino/
 // Code is licences with MIT license
@@ -13,7 +13,11 @@
 #define CLOCK_OUT 2 // internal clock output is sent via D02
 #define LED_OUT 13  // led is connected to pin D13
 
-#define SYNC_LED_TO_INTERNAL true // if true, the led is flashes in sync with the internal clock. if false, the LED is synced to the external clock signal
+
+#define USE_INTERNAL_PULLUP true // if true, the internall pullup on d03 is used instead of an external resistor, connected to power. 
+// this simplifies the schematics and was suggested by asciisynth (https://blinkl.info) via instagram. 
+
+#define SYNC_LED_TO_INTERNAL false // if true, the led is flashes in sync with the internal clock. if false, the LED is synced to the external clock signal
 
 const unsigned long cycleLen=250; // this defines the cycle length of the internal clock. One complete tick lasts cycleLen milli seconds
 const unsigned long upTime=50; // this defines how many milli seconds of each cycle the clock signal is set to HIGH
@@ -42,9 +46,15 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  pinMode(CLOCK_IN,  INPUT); 
+  
   pinMode(CLOCK_OUT, OUTPUT);
   pinMode(LED_OUT,   OUTPUT);
+
+  if(USE_INTERNAL_PULLUP){
+    pinMode(CLOCK_IN,  INPUT_PULLUP); 
+  }else{
+    pinMode(CLOCK_IN,  INPUT); 
+  }
 
   Serial.println("setup done.");
 } // end of Setup
